@@ -1,9 +1,11 @@
 import sys
 
 import pygame
+from pygame.mixer_music import play
 from asteroid import Asteroid
 from asteroidfield import AsteroidField
 from player import Player
+from scoreboard import ScoreBoard
 from shot import Shot
 from pygame import display, draw
 from constants import SCREEN_WIDTH, SCREEN_HEIGHT
@@ -28,9 +30,11 @@ def main():
     Asteroid.containers = (asteroids, updatable, drawable)
     AsteroidField.containers = updatable
     Shot.containers = (shots, updatable, drawable)
+    ScoreBoard.containers = (updatable, drawable)
 
     player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
-    asteroidfield = AsteroidField()
+    AsteroidField()
+    scoreboard = ScoreBoard()
 
     while True:
         log_state()
@@ -51,12 +55,16 @@ def main():
             for shot in shots:
                 if asteroid.collides_with(shot):
                     log_event("asteroid_shot")
+                    log_event(f"score: {player.score}")
                     asteroid.split()
                     shot.kill()
+                    scoreboard.add_score()
 
         for d in drawable:
             d.draw(screen)
 
+        #screen.blit(scoreboard.draw(), (SCREEN_WIDTH / 2, 0))
+        screen.blit(scoreboard.draw(), ((SCREEN_WIDTH / 2) - scoreboard.get_size()[0] / 2, 0))
         display.flip()
 
         dt = clock.tick(60) / 1000
