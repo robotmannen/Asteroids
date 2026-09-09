@@ -7,6 +7,7 @@ class Player(CircleShape):
     def __init__(self, x, y):
         super().__init__(x, y, PLAYER_RADIUS)
         self.rotation = 0
+        self.velocity = pygame.Vector2(0, 0)
         self.shot_cooldown = 0
         self.score = 0
 
@@ -43,8 +44,10 @@ class Player(CircleShape):
     def move(self, dt):
         unit_vector = pygame.Vector2(0, 1)
         rotated_vector = unit_vector.rotate(self.rotation)
-        rotated_with_speed_vector = rotated_vector * PLAYER_SPEED * dt
-        self.position += rotated_with_speed_vector
+        rotated_with_speed_vector = rotated_vector * PLAYER_SPEED
+        self.velocity = self.velocity.lerp(rotated_with_speed_vector, 10 * dt)
+        #self.position += rotated_with_speed_vector
+        self.position += self.velocity * dt
 
     def shoot(self):
         if self.shot_cooldown < 0:
