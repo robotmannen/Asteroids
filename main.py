@@ -65,7 +65,7 @@ def main():
         for d in drawable:
             d.draw(screen)
 
-        screen.blit(scoreboard.draw(), ((SCREEN_WIDTH / 2) - scoreboard.get_size()[0] / 2, 0))
+        screen.blit(scoreboard.draw(), (scoreboard.get_position(), 0))
         display.flip()
 
         dt = clock.tick(60) / 1000

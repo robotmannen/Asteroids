@@ -1,4 +1,5 @@
 import pygame
+from constants import SCREEN_WIDTH
 
 
 class ScoreBoard:
@@ -13,8 +14,8 @@ class ScoreBoard:
     def draw(self):
         return self.font.render(self.score_text, True, (255, 255, 255))
 
-    def get_size(self):
-        return self.font.size(self.score_text)
+    def get_position(self):
+        return ((SCREEN_WIDTH / 2) - self.font.size(self.score_text)[0] / 2)
 
     def add_score(self):
         self.score += 1
